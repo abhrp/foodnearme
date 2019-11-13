@@ -1,7 +1,5 @@
 <resources>
     <!--
-    TODO: Before you run your application, you need a Google Maps API key.
-
     To get one, follow this link, follow the directions and press "Create" at the end:
 
     https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=CD:83:13:CB:52:16:DA:0A:DF:00:68:3D:CD:B7:1F:AF:32:8B:CB:43%3Bcom.abhrp.foodnearme.ui
