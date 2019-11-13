@@ -56,6 +56,7 @@ class ConnectionMonitor @Inject constructor(private val context: Context): LiveD
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun updateConnection() {
         val activeNetworkInfo = connectivityManager.activeNetworkInfo
         if (activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting) {
