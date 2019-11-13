@@ -4,4 +4,9 @@
     <string name="action_dismiss">Dismiss</string>
     <string name="generic_error">Something went wrong</string>
     <string name="title_activity_maps">Map</string>
+    <string name="button_allow">Allow</string>
+    <string name="button_deny">Deny</string>
+    <string name="permission_location_rationale">We need the location permission to show you the most accurate results as per your current location.</string>
+    <string name="location_denied">Location permission denied</string>
+    <string name="never_ask_location">Will never ask for location.</string>
 </resources>

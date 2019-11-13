@@ -3,6 +3,8 @@ package com.abhrp.foodnearme.ui.base
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.abhrp.foodnearme.R
 import com.abhrp.foodnearme.util.ConnectionMonitor
@@ -46,6 +48,10 @@ abstract class BaseActivity: DaggerAppCompatActivity() {
 
     fun showError(message: String?) {
         Toast.makeText(this, message ?: getString(R.string.generic_error), Toast.LENGTH_LONG).show()
+    }
+
+    fun showToast(@StringRes messageId: Int) {
+        Toast.makeText(this, getString(messageId), Toast.LENGTH_LONG).show()
     }
 
     override fun onDestroy() {

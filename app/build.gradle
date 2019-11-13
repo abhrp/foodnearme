@@ -82,6 +82,8 @@ dependencies {
 
     //Util
     implementation 'com.orhanobut:logger:2.2.0'
+    implementation 'org.permissionsdispatcher:permissionsdispatcher:4.6.0'
+    kapt 'org.permissionsdispatcher:permissionsdispatcher-processor:4.6.0'
 
     //Image
     implementation 'com.squareup.picasso:picasso:2.71828'
@@ -89,6 +91,7 @@ dependencies {
 
     //Google
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
 
     //Test
     testImplementation 'junit:junit:4.12'
