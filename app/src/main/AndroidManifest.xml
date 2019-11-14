@@ -44,9 +44,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
 
-                <action android:name="android.intent.action.VIEW" />
-
-                <data android:scheme="foodnearme" />
             </intent-filter>
         </activity>
     </application>

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.abhrp.foodnearme.domain.model.main.Restaurant
+import com.abhrp.foodnearme.domain.model.wrapper.ResultWrapper
 import com.abhrp.foodnearme.domain.usecase.main.GetRestaurants
 import com.abhrp.foodnearme.presentation.state.Resource
 import com.abhrp.foodnearme.presentation.state.ResourceState
@@ -30,10 +31,15 @@ class RestaurantsViewModel @Inject constructor(private val getRestaurants: GetRe
         getRestaurants.execute(RestaurantsObserver(), GetRestaurants.Params.getParams(northEast, southWest))
     }
 
-    private inner class RestaurantsObserver: DisposableSingleObserver<List<Restaurant>>() {
+    private inner class RestaurantsObserver: DisposableSingleObserver<ResultWrapper<List<Restaurant>>>() {
 
-        override fun onSuccess(data: List<Restaurant>) {
-            restaurantsLiveData.postValue(Resource(ResourceState.SUCCESS, data, null))
+        override fun onSuccess(result: ResultWrapper<List<Restaurant>>) {
+            if (result.code == 200) {
+                restaurantsLiveData.postValue(Resource(ResourceState.SUCCESS, result.data, null))
+            } else {
+                logger.logError(result.error)
+                restaurantsLiveData.postValue(Resource(ResourceState.ERROR, null, result.error))
+            }
         }
 
         override fun onError(error: Throwable) {

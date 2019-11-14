@@ -10,4 +10,5 @@
     <string name="location_denied">Location permission denied</string>
     <string name="never_ask_location">Will never ask for location.</string>
     <string name="offline_new_results">Cannot fetch new results when offline</string>
+    <string name="new_results_location">Cannot fetch results without current location.</string>
 </resources>

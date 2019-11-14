@@ -3,6 +3,7 @@ package com.abhrp.foodnearme.ui.main
 import android.Manifest
 import android.content.res.Resources
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.abhrp.foodnearme.R
@@ -50,6 +51,7 @@ class MainActivity : BaseActivity(),
     private var googleMap: GoogleMap? = null
     private var shouldFetchNewRestaurants = false
     private var isMyLocationClicked = false
+    private var locationPermissionProvided = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,13 +66,14 @@ class MainActivity : BaseActivity(),
         restaurantsViewModel.observerRestaurants().observe(this, Observer { resource ->
             when(resource.state) {
                 ResourceState.LOADING -> {
-
+                    progressbar.visibility = View.VISIBLE
                 }
                 ResourceState.SUCCESS -> {
+                    progressbar.visibility = View.GONE
                     addNewMarkersOnMap(resource.data)
                 }
                 ResourceState.ERROR -> {
-                    logger.logError(resource.error)
+                    progressbar.visibility = View.GONE
                     showError(resource.error)
                 }
             }
@@ -172,6 +175,11 @@ class MainActivity : BaseActivity(),
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
     }
 
+    private fun setDefaultLocationOnMapIfPermissionDenied() {
+        val latLng = LatLng(52.2944975,4.9544256)
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+    }
+
     override fun online() {
         dismissOfflineSnackBar()
         fetchNewRestaurants()
@@ -192,6 +200,7 @@ class MainActivity : BaseActivity(),
 
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     fun getCurrentLocation() {
+        locationPermissionProvided = true
         observerForLocationChanges()
     }
 
@@ -203,11 +212,13 @@ class MainActivity : BaseActivity(),
     @OnPermissionDenied(Manifest.permission.ACCESS_FINE_LOCATION)
     fun onLocationDenied() {
         showToast(R.string.location_denied)
+        setDefaultLocationOnMapIfPermissionDenied()
     }
 
     @OnNeverAskAgain(Manifest.permission.ACCESS_FINE_LOCATION)
     fun onNeverAskLocationPermission() {
         showToast(R.string.never_ask_location)
+        setDefaultLocationOnMapIfPermissionDenied()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
