@@ -15,9 +15,6 @@ import javax.inject.Inject
 class RestaurantsViewModel @Inject constructor(private val getRestaurants: GetRestaurants) :
     ViewModel() {
 
-    @Inject
-    lateinit var logger: AppLogger
-
     override fun onCleared() {
         super.onCleared()
         getRestaurants.disposeAll()
@@ -53,13 +50,11 @@ class RestaurantsViewModel @Inject constructor(private val getRestaurants: GetRe
                     )
                 }
             } else {
-                logger.logError(result.error)
                 restaurantsLiveData.postValue(Resource(ResourceState.ERROR, null, result.error))
             }
         }
 
         override fun onError(error: Throwable) {
-            logger.logThrowable(error)
             restaurantsLiveData.postValue(
                 Resource(
                     ResourceState.ERROR,

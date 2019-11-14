@@ -10,13 +10,11 @@ import com.abhrp.foodnearme.presentation.state.Resource
 import com.abhrp.foodnearme.presentation.state.ResourceState
 import com.abhrp.foodnearme.util.logging.AppLogger
 import io.reactivex.observers.DisposableSingleObserver
+import okhttp3.internal.http2.Http2Reader.Companion.logger
 import javax.inject.Inject
 
 class RestaurantDetailsViewModel @Inject constructor(private val getRestaurantDetails: GetRestaurantDetails) :
     ViewModel() {
-
-    @Inject
-    lateinit var logger: AppLogger
 
     private val restaurantDetailsLiveData = MutableLiveData<Resource<RestaurantDetails>>()
 
@@ -50,7 +48,6 @@ class RestaurantDetailsViewModel @Inject constructor(private val getRestaurantDe
                     )
                 )
             } else {
-                logger.logError(result.error)
                 restaurantDetailsLiveData.postValue(
                     Resource(
                         ResourceState.ERROR,
@@ -62,7 +59,6 @@ class RestaurantDetailsViewModel @Inject constructor(private val getRestaurantDe
         }
 
         override fun onError(e: Throwable) {
-            logger.logThrowable(e)
             restaurantDetailsLiveData.postValue(
                 Resource(
                     ResourceState.ERROR,
