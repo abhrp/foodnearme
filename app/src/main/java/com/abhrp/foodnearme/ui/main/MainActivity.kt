@@ -12,6 +12,7 @@ import com.abhrp.foodnearme.domain.model.main.Restaurant
 import com.abhrp.foodnearme.presentation.state.ResourceState
 import com.abhrp.foodnearme.presentation.viewmodel.RestaurantsViewModel
 import com.abhrp.foodnearme.ui.base.BaseActivity
+import com.abhrp.foodnearme.ui.detail.RestaurantDetailsActivity
 import com.abhrp.foodnearme.util.location.LocationModel
 import com.abhrp.foodnearme.util.location.LocationMonitor
 import com.abhrp.foodnearme.util.logging.AppLogger
@@ -113,8 +114,12 @@ class MainActivity : BaseActivity(),
 
     override fun onInfoWindowClick(marker: Marker?) {
         if(marker != null) {
-            //Go to new screen
+            goToDetailsScreen(marker.tag as String)
         }
+    }
+
+    private fun goToDetailsScreen(id: String) {
+        startActivity(RestaurantDetailsActivity.newInstance(this, id))
     }
 
     override fun onCameraMove() {
