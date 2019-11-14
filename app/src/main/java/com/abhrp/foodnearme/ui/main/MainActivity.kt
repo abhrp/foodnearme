@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.abhrp.foodnearme.R
 import com.abhrp.foodnearme.di.factory.ViewModelFactory
+import com.abhrp.foodnearme.domain.model.main.Restaurant
 import com.abhrp.foodnearme.presentation.state.ResourceState
 import com.abhrp.foodnearme.presentation.viewmodel.RestaurantsViewModel
 import com.abhrp.foodnearme.ui.base.BaseActivity
@@ -18,12 +19,13 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_main.*
 import permissions.dispatcher.*
 import javax.inject.Inject
 
 @RuntimePermissions
-class MainActivity : BaseActivity(), OnMapReadyCallback {
+class MainActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveListener, GoogleMap.OnCameraMoveStartedListener, GoogleMap.OnCameraMoveCanceledListener {
 
     @Inject
     lateinit var locationMonitor: LocationMonitor
@@ -48,11 +50,31 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
     private fun observeForRestaurantsList() {
         restaurantsViewModel.observerRestaurants().observe(this, Observer { resource ->
             when(resource.state) {
-                ResourceState.LOADING -> {}
-                ResourceState.SUCCESS -> {}
-                ResourceState.ERROR -> {}
+                ResourceState.LOADING -> {
+
+                }
+                ResourceState.SUCCESS -> {
+                    addNewMarkersOnMap(resource.data)
+                }
+                ResourceState.ERROR -> {
+                    showError(resource.error)
+                }
             }
         })
+    }
+
+    private fun fetchRestaurants(northEast: String, southWest: String) {
+        restaurantsViewModel.fetchRestaurants(northEast, southWest)
+    }
+
+    private fun addNewMarkersOnMap(restaurants: List<Restaurant>?) {
+        restaurants?.map {
+            val title = it.name
+            val position = LatLng(it.location.latitude, it.location.longitude)
+            val tag = it.id
+            val markerOptions = MarkerOptions().position(position).title(title).snippet(title)
+            val marker = googleMap?.addMarker(markerOptions)
+        }
     }
 
     override fun onMapReady(map: GoogleMap?) {
@@ -62,7 +84,34 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
         } catch (e: Resources.NotFoundException) {
 
         }
+        googleMap?.setOnCameraIdleListener(this)
         getCurrentLocationWithPermissionCheck()
+    }
+
+    override fun onCameraMove() {
+
+    }
+
+    override fun onCameraMoveStarted(p0: Int) {
+
+    }
+
+    override fun onCameraMoveCanceled() {
+        
+    }
+
+    override fun onCameraIdle() {
+        sendNewRequestForCurrentMapBounds()
+    }
+
+    private fun sendNewRequestForCurrentMapBounds() {
+        val latLngBounds = googleMap?.projection?.visibleRegion?.latLngBounds
+        if (latLngBounds != null) {
+            googleMap?.clear()
+            val northEast = "${latLngBounds.northeast.latitude},${latLngBounds.northeast.longitude}"
+            val southWest = "${latLngBounds.southwest.latitude},${latLngBounds.southwest.longitude}"
+            fetchRestaurants(northEast, southWest)
+        }
     }
 
     private fun observerForLocationChanges() {
