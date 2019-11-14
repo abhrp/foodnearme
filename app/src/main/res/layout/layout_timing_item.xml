@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="@color/colorSecondaryText"
+    android:fontFamily="@font/muli_regular"
+    android:textSize="16sp"
+    tools:text="Mon-Fri - 11 AM to 10PM"
+    android:background="@android:color/white"/>

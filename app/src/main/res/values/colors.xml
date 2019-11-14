@@ -7,4 +7,11 @@
     <color name="colorPrimaryText">#212121</color>
     <color name="colorSecondaryText">#757575</color>
     <color name="colorDivider">#BDBDBD</color>
+    <color name="colorImage">#80000000</color>
+    <color name="colorContentBackground">#FCFCFC</color>
+    <color name="colorOpenNow">#8AFF00</color>
+    <color name="colorClosedNow">#FF0000</color>
+    <color name="colorRatingsBackground">#EEEEEE</color>
+    <color name="white">#BDBDBD</color>
+    <color name="colorLink">#033CF7</color>
 </resources>

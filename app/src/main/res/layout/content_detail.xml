@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorContentBackground"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_restaurant_details">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/contentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="24dp">
+
+        <TextView
+            android:id="@+id/restaurantName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/muli_semibold"
+            android:maxLines="2"
+            android:minLines="1"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Truffles" />
+
+        <TextView
+            android:id="@+id/cuisine"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/muli_regular"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/restaurantName"
+            tools:text="Burgers, Cafe" />
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/muli_regular"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cuisine"
+            tools:text="#28 (4th 'B' Crs, 5th Blk, Koramangala), Bangalore 560095, Karnātaka, India" />
+
+        <TextView
+            android:id="@+id/openStatus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/muli_semibold"
+            android:textColor="@color/colorOpenNow"
+            android:textSize="14sp"
+            tools:text="@string/open_now"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/address" />
+
+        <TextView
+            android:id="@+id/likesCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/openStatus"
+            app:layout_constraintStart_toStartOf="parent"
+            android:drawableStart="@drawable/ic_likes"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorPrimaryText"
+            android:fontFamily="@font/muli_semibold"
+            tools:text="300 Likes"
+            />
+
+        <TextView
+            android:id="@+id/ratings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimaryText"
+            android:background="@drawable/rating_background"
+            tools:text="8.3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/likesCount"
+            android:elevation="4dp"/>
+        <TextView
+            android:id="@+id/totalRatings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="24dp"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimaryText"
+            android:background="@drawable/total_ratings_background"
+            tools:text="100 ratings"
+            app:layout_constraintStart_toEndOf="@id/ratings"
+            app:layout_constraintTop_toBottomOf="@+id/likesCount" />
+
+        <TextView
+            android:id="@+id/affordability"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/muli_semibold"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="14sp"
+            android:padding="2dp"
+            tools:text="Pricing - Cheap"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/likesCount"/>
+
+        <TextView
+            android:id="@+id/viewMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="18dp"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:textColor="@color/colorLink"
+            android:text="@string/view_menu"
+            app:layout_constraintTop_toBottomOf="@id/ratings"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_goneMarginTop="24dp"
+            android:visibility="visible"
+            />
+
+        <TextView
+            android:id="@+id/phoneText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/muli_regular"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="16sp"
+            tools:text="Phone: +0000 0000 0000"
+            app:layout_constraintTop_toBottomOf="@id/viewMenu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_goneMarginTop="24dp"/>
+
+        <TextView
+            android:id="@+id/timingHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:layout_marginStart="24dp"
+            android:textSize="18sp"
+            android:textColor="@color/colorPrimaryText"
+            android:fontFamily="@font/muli_semibold"
+            app:layout_constraintTop_toBottomOf="@id/phoneText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_goneMarginTop="36dp"/>
+
+        <TextView
+            android:id="@+id/todayTiming"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="24dp"
+            android:fontFamily="@font/muli_regular"
+            android:textSize="16sp"
+            android:textColor="@color/colorSecondaryText"
+            tools:text="Today: Open till 11 PM"
+            app:layout_constraintTop_toBottomOf="@id/timingHeader"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <LinearLayout
+            android:id="@+id/dailyTimingsContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="24dp"
+            app:layout_constraintTop_toBottomOf="@id/todayTiming"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_goneMarginTop="16dp"
+            android:orientation="vertical"/>
+
+        <LinearLayout
+            android:id="@+id/socialBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/social_bar_background"
+            android:elevation="8dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dailyTimingsContainer"
+            app:layout_goneMarginTop="24dp">
+
+            <ImageView
+                android:id="@+id/phoneCallIcon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_phone_call" />
+
+            <ImageView
+                android:id="@+id/twitterIcon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_twitter" />
+
+            <ImageView
+                android:id="@+id/facebookIcon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_facebook" />
+
+            <ImageView
+                android:id="@+id/googleMapIcon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_map_direction" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
