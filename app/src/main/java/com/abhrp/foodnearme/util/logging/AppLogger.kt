@@ -1,7 +1,5 @@
 package com.abhrp.foodnearme.util.logging
 
-import java.lang.Exception
-
 /**
  * An interface for logging. Can be implemented by any layer and used on any layer
  */

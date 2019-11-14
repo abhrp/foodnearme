@@ -12,7 +12,8 @@ class RemoteConfigProvider {
 
     @Singleton
     @Provides
-    fun apiConfigProvider(): APIConfigProvider = APIConfigProvider(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET)
+    fun apiConfigProvider(): APIConfigProvider =
+        APIConfigProvider(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET)
 
     @Singleton
     @Provides

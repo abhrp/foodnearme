@@ -8,10 +8,10 @@ import javax.inject.Singleton
 
 @Singleton
 class RetrofitProvider @Inject constructor(okHttpProvider: OkHttpProvider) {
- val retrofit: Retrofit = Retrofit.Builder()
-     .baseUrl(RemoteConstants.BASE_URL)
-     .addConverterFactory(MoshiConverterFactory.create())
-     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-     .client(okHttpProvider.okHttpClient)
-     .build()
+    val retrofit: Retrofit = Retrofit.Builder()
+        .baseUrl(RemoteConstants.BASE_URL)
+        .addConverterFactory(MoshiConverterFactory.create())
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .client(okHttpProvider.okHttpClient)
+        .build()
 }

@@ -1,4 +1,4 @@
-package com.abhrp.foodnearme.presentation.viewmodel
+package com.abhrp.foodnearme.presentation.viewmodel.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,7 +12,8 @@ import com.abhrp.foodnearme.util.logging.AppLogger
 import io.reactivex.observers.DisposableSingleObserver
 import javax.inject.Inject
 
-class RestaurantsViewModel @Inject constructor(private val getRestaurants: GetRestaurants): ViewModel() {
+class RestaurantsViewModel @Inject constructor(private val getRestaurants: GetRestaurants) :
+    ViewModel() {
 
     @Inject
     lateinit var logger: AppLogger
@@ -28,18 +29,28 @@ class RestaurantsViewModel @Inject constructor(private val getRestaurants: GetRe
 
     fun fetchRestaurants(northEast: String, southWest: String) {
         restaurantsLiveData.postValue(Resource(ResourceState.LOADING, null, null))
-        getRestaurants.execute(RestaurantsObserver(), GetRestaurants.Params.getParams(northEast, southWest))
+        getRestaurants.execute(
+            RestaurantsObserver(),
+            GetRestaurants.Params.getParams(northEast, southWest)
+        )
     }
 
-    private inner class RestaurantsObserver: DisposableSingleObserver<ResultWrapper<List<Restaurant>>>() {
+    private inner class RestaurantsObserver :
+        DisposableSingleObserver<ResultWrapper<List<Restaurant>>>() {
 
         override fun onSuccess(result: ResultWrapper<List<Restaurant>>) {
             if (result.code == 200) {
                 val data = result.data
-                if(data != null && data.count() > 0) {
+                if (data != null && data.count() > 0) {
                     restaurantsLiveData.postValue(Resource(ResourceState.SUCCESS, data, null))
                 } else {
-                    restaurantsLiveData.postValue(Resource(ResourceState.ERROR, null, "No restaurants found in the area."))
+                    restaurantsLiveData.postValue(
+                        Resource(
+                            ResourceState.ERROR,
+                            null,
+                            "No restaurants found in the area."
+                        )
+                    )
                 }
             } else {
                 logger.logError(result.error)
@@ -49,7 +60,13 @@ class RestaurantsViewModel @Inject constructor(private val getRestaurants: GetRe
 
         override fun onError(error: Throwable) {
             logger.logThrowable(error)
-            restaurantsLiveData.postValue(Resource(ResourceState.ERROR, null, error.localizedMessage))
+            restaurantsLiveData.postValue(
+                Resource(
+                    ResourceState.ERROR,
+                    null,
+                    error.localizedMessage
+                )
+            )
         }
     }
 }

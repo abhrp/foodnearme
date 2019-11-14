@@ -5,14 +5,14 @@ import com.abhrp.foodnearme.remote.config.BuildTypeProvider
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
-import java.lang.Exception
 import javax.inject.Inject
 
-class AppLoggerImpl @Inject constructor(private val buildTypeProvider: BuildTypeProvider): AppLogger {
+class AppLoggerImpl @Inject constructor(private val buildTypeProvider: BuildTypeProvider) :
+    AppLogger {
 
     init {
         val formatStrategy = PrettyFormatStrategy.newBuilder().tag("FoodNearMe").build()
-        Logger.addLogAdapter(object: AndroidLogAdapter(formatStrategy) {
+        Logger.addLogAdapter(object : AndroidLogAdapter(formatStrategy) {
             override fun isLoggable(priority: Int, tag: String?): Boolean {
                 return buildTypeProvider.isDebug
             }

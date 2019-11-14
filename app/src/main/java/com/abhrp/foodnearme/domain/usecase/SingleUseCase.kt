@@ -21,7 +21,8 @@ abstract class SingleUseCase<T, P>(private val postExecutionThread: PostExecutio
         requireNotNull(postExecutionThread)
         requireNotNull(postExecutionThread.scheduler)
 
-        val single = this.buildUseCaseObservable(params).subscribeOn(Schedulers.io()).observeOn(postExecutionThread.scheduler)
+        val single = this.buildUseCaseObservable(params).subscribeOn(Schedulers.io())
+            .observeOn(postExecutionThread.scheduler)
         addDisposable(single.subscribeWith(observer))
     }
 

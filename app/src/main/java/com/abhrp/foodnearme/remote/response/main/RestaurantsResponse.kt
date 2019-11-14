@@ -1,6 +1,6 @@
-package com.abhrp.foodnearme.remote.response
+package com.abhrp.foodnearme.remote.response.main
 
-import com.abhrp.foodnearme.remote.model.Venue
+import com.abhrp.foodnearme.remote.model.main.Venue
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

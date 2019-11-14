@@ -13,9 +13,10 @@ class LocationBitmapProvider @Inject constructor(private val context: Context) {
 
     val foodMarkerBitmap: BitmapDescriptor?
         get() {
-            return  ContextCompat.getDrawable(context, R.drawable.ic_marker_food)?.run {
+            return ContextCompat.getDrawable(context, R.drawable.ic_marker_food)?.run {
                 setBounds(0, 0, intrinsicWidth, intrinsicHeight)
-                val bitmap = Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
+                val bitmap =
+                    Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
                 draw(Canvas(bitmap))
                 BitmapDescriptorFactory.fromBitmap(bitmap)
             }

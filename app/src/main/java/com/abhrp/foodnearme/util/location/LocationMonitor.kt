@@ -7,18 +7,19 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import javax.inject.Inject
 
-class LocationMonitor @Inject constructor(context: Context): LiveData<LocationModel>() {
+class LocationMonitor @Inject constructor(context: Context) : LiveData<LocationModel>() {
 
-    private var fusedLocationProvider: FusedLocationProviderClient? = LocationServices.getFusedLocationProviderClient(context)
+    private var fusedLocationProvider: FusedLocationProviderClient? =
+        LocationServices.getFusedLocationProviderClient(context)
 
 
     override fun onActive() {
         super.onActive()
         fusedLocationProvider?.lastLocation?.addOnSuccessListener { location: Location? ->
-                location?.also {
-                    setLocationData(it)
-                }
+            location?.also {
+                setLocationData(it)
             }
+        }
     }
 
     override fun onInactive() {

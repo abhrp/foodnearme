@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.abhrp.foodnearme.R
 import com.abhrp.foodnearme.util.ConnectionMonitor
@@ -14,7 +13,7 @@ import dagger.android.support.DaggerAppCompatActivity
 import permissions.dispatcher.PermissionRequest
 import javax.inject.Inject
 
-abstract class BaseActivity: DaggerAppCompatActivity() {
+abstract class BaseActivity : DaggerAppCompatActivity() {
 
     @Inject
     lateinit var connectionMonitor: ConnectionMonitor
@@ -39,7 +38,8 @@ abstract class BaseActivity: DaggerAppCompatActivity() {
     }
 
     fun showOffLineSnackBar(view: View) {
-        offLineSnackbar = Snackbar.make(view, getString(R.string.no_internet_message), Snackbar.LENGTH_INDEFINITE)
+        offLineSnackbar =
+            Snackbar.make(view, getString(R.string.no_internet_message), Snackbar.LENGTH_INDEFINITE)
         offLineSnackbar?.setAction(getString(R.string.action_dismiss)) {
             offLineSnackbar?.dismiss()
         }

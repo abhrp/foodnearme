@@ -16,14 +16,15 @@ import javax.inject.Inject
 /**
  * A custom LiveData class to monitor the network status of the device. Uses NetworkCallback for Lollipop and above
  */
-class ConnectionMonitor @Inject constructor(private val context: Context): LiveData<Boolean>() {
+class ConnectionMonitor @Inject constructor(private val context: Context) : LiveData<Boolean>() {
     companion object {
         const val CONNECTION_ACTION = "com.abhrp.foodnearme.NETWORK_ACTION"
     }
 
     private lateinit var networkReceiver: NetworkReceiver
     private lateinit var networkCallback: ConnectivityManager.NetworkCallback
-    private var connectivityManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    private var connectivityManager: ConnectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -39,8 +40,11 @@ class ConnectionMonitor @Inject constructor(private val context: Context): LiveD
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             connectivityManager.registerDefaultNetworkCallback(networkCallback)
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val networkRequest = NetworkRequest.Builder().addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR).addTransportType(
-                NetworkCapabilities.TRANSPORT_WIFI).build()
+            val networkRequest =
+                NetworkRequest.Builder().addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+                    .addTransportType(
+                        NetworkCapabilities.TRANSPORT_WIFI
+                    ).build()
             connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
         } else {
             context.registerReceiver(networkReceiver, IntentFilter(CONNECTION_ACTION))
@@ -67,7 +71,8 @@ class ConnectionMonitor @Inject constructor(private val context: Context): LiveD
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private inner class NetworkCallback(private val connectionMonitor: ConnectionMonitor): ConnectivityManager.NetworkCallback() {
+    private inner class NetworkCallback(private val connectionMonitor: ConnectionMonitor) :
+        ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
             super.onAvailable(network)
             connectionMonitor.postValue(true)
@@ -79,7 +84,7 @@ class ConnectionMonitor @Inject constructor(private val context: Context): LiveD
         }
     }
 
-    private inner class NetworkReceiver: BroadcastReceiver() {
+    private inner class NetworkReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null) {
                 val action = intent.action

@@ -8,12 +8,26 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class OkHttpProvider @Inject constructor(private val apiConfigProvider: APIConfigProvider, private val buildTypeProvider: BuildTypeProvider, private val versionProvider: VersionProvider) {
+class OkHttpProvider @Inject constructor(
+    private val apiConfigProvider: APIConfigProvider,
+    private val buildTypeProvider: BuildTypeProvider,
+    private val versionProvider: VersionProvider
+) {
 
     val okHttpClient: OkHttpClient
-        get() = createOkHttpClient(makeHttpLoggingInterceptor(buildTypeProvider.isDebug), apiAuthenticationInterceptor(apiConfigProvider.clientId, apiConfigProvider.clientSecret, versionProvider.getVersionDate()))
+        get() = createOkHttpClient(
+            makeHttpLoggingInterceptor(buildTypeProvider.isDebug),
+            apiAuthenticationInterceptor(
+                apiConfigProvider.clientId,
+                apiConfigProvider.clientSecret,
+                versionProvider.getVersionDate()
+            )
+        )
 
-    private fun createOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor, apiAuthenticationInterceptor: Interceptor): OkHttpClient {
+    private fun createOkHttpClient(
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+        apiAuthenticationInterceptor: Interceptor
+    ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
             .addInterceptor(apiAuthenticationInterceptor)
@@ -22,7 +36,11 @@ class OkHttpProvider @Inject constructor(private val apiConfigProvider: APIConfi
             .build()
     }
 
-    private fun apiAuthenticationInterceptor(clientId: String, clientSecret: String, version: String): Interceptor {
+    private fun apiAuthenticationInterceptor(
+        clientId: String,
+        clientSecret: String,
+        version: String
+    ): Interceptor {
         return Interceptor { chain ->
             val oldRequest = chain.request()
             val oldUrl = oldRequest.url
@@ -42,7 +60,8 @@ class OkHttpProvider @Inject constructor(private val apiConfigProvider: APIConfi
 
     private fun makeHttpLoggingInterceptor(isDebug: Boolean): HttpLoggingInterceptor {
         val logging = HttpLoggingInterceptor()
-        logging.level = if (isDebug) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+        logging.level =
+            if (isDebug) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
         return logging
     }
 }

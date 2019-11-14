@@ -10,7 +10,7 @@ import com.abhrp.foodnearme.R
 import com.abhrp.foodnearme.di.factory.ViewModelFactory
 import com.abhrp.foodnearme.domain.model.main.Restaurant
 import com.abhrp.foodnearme.presentation.state.ResourceState
-import com.abhrp.foodnearme.presentation.viewmodel.RestaurantsViewModel
+import com.abhrp.foodnearme.presentation.viewmodel.main.RestaurantsViewModel
 import com.abhrp.foodnearme.ui.base.BaseActivity
 import com.abhrp.foodnearme.ui.detail.RestaurantDetailsActivity
 import com.abhrp.foodnearme.util.location.LocationModel
@@ -21,7 +21,10 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_main.*
 import permissions.dispatcher.*
 import javax.inject.Inject
@@ -57,7 +60,8 @@ class MainActivity : BaseActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        restaurantsViewModel = ViewModelProviders.of(this, viewModelFactory).get(RestaurantsViewModel::class.java)
+        restaurantsViewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(RestaurantsViewModel::class.java)
         observeForRestaurantsList()
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -65,7 +69,7 @@ class MainActivity : BaseActivity(),
 
     private fun observeForRestaurantsList() {
         restaurantsViewModel.observerRestaurants().observe(this, Observer { resource ->
-            when(resource.state) {
+            when (resource.state) {
                 ResourceState.LOADING -> {
                     progressbar.visibility = View.VISIBLE
                 }
@@ -90,7 +94,8 @@ class MainActivity : BaseActivity(),
             val title = it.name
             val position = LatLng(it.location.latitude, it.location.longitude)
             val tag = it.id
-            val markerOptions = MarkerOptions().position(position).title(title).icon(locationBitmapProvider.foodMarkerBitmap)
+            val markerOptions = MarkerOptions().position(position).title(title)
+                .icon(locationBitmapProvider.foodMarkerBitmap)
             val marker = googleMap?.addMarker(markerOptions)
             marker?.tag = tag
         }
@@ -113,7 +118,7 @@ class MainActivity : BaseActivity(),
     }
 
     override fun onInfoWindowClick(marker: Marker?) {
-        if(marker != null) {
+        if (marker != null) {
             goToDetailsScreen(marker.tag as String)
         }
     }
@@ -127,7 +132,7 @@ class MainActivity : BaseActivity(),
     }
 
     override fun onCameraMoveStarted(reason: Int) {
-        when(reason) {
+        when (reason) {
             GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE -> {
                 shouldFetchNewRestaurants = true
             }
@@ -159,8 +164,10 @@ class MainActivity : BaseActivity(),
             val latLngBounds = googleMap?.projection?.visibleRegion?.latLngBounds
             if (latLngBounds != null) {
                 googleMap?.clear()
-                val northEast = "${latLngBounds.northeast.latitude},${latLngBounds.northeast.longitude}"
-                val southWest = "${latLngBounds.southwest.latitude},${latLngBounds.southwest.longitude}"
+                val northEast =
+                    "${latLngBounds.northeast.latitude},${latLngBounds.northeast.longitude}"
+                val southWest =
+                    "${latLngBounds.southwest.latitude},${latLngBounds.southwest.longitude}"
                 fetchRestaurants(northEast, southWest)
             }
         } else {
@@ -181,7 +188,7 @@ class MainActivity : BaseActivity(),
     }
 
     private fun setDefaultLocationOnMapIfPermissionDenied() {
-        val latLng = LatLng(52.2944975,4.9544256)
+        val latLng = LatLng(52.2944975, 4.9544256)
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
     }
 
@@ -226,7 +233,11 @@ class MainActivity : BaseActivity(),
         setDefaultLocationOnMapIfPermissionDenied()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         onRequestPermissionsResult(requestCode, grantResults)
     }

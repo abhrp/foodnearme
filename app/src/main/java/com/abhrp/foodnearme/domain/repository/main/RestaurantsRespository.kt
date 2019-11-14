@@ -1,4 +1,4 @@
-package com.abhrp.foodnearme.domain.repository
+package com.abhrp.foodnearme.domain.repository.main
 
 import com.abhrp.foodnearme.domain.model.main.Restaurant
 import com.abhrp.foodnearme.domain.model.wrapper.ResultWrapper
@@ -13,5 +13,8 @@ interface RestaurantsRespository {
      * @return A list of Restaurant objects
      * @see Restaurant
      */
-    fun getRestaurants(northEast: String, southWest: String): Single<ResultWrapper<List<Restaurant>>>
+    fun getRestaurants(
+        northEast: String,
+        southWest: String
+    ): Single<ResultWrapper<List<Restaurant>>>
 }

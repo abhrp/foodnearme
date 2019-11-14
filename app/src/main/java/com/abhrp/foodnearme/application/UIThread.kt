@@ -8,7 +8,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class UIThread @Inject constructor(): PostExecutionThread {
+class UIThread @Inject constructor() : PostExecutionThread {
     /**
      * Return the Scheduler needed for RxJava execution
      *
