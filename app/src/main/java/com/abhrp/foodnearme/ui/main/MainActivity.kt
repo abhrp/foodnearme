@@ -2,7 +2,10 @@ package com.abhrp.foodnearme.ui.main
 
 import android.Manifest
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.abhrp.foodnearme.R
@@ -13,13 +16,12 @@ import com.abhrp.foodnearme.presentation.viewmodel.RestaurantsViewModel
 import com.abhrp.foodnearme.ui.base.BaseActivity
 import com.abhrp.foodnearme.util.location.LocationModel
 import com.abhrp.foodnearme.util.location.LocationMonitor
+import com.abhrp.foodnearme.util.map.LocationBitmapProvider
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import kotlinx.android.synthetic.main.activity_main.*
 import permissions.dispatcher.*
 import javax.inject.Inject
@@ -40,6 +42,8 @@ class MainActivity : BaseActivity(),
     lateinit var restaurantsViewModel: RestaurantsViewModel
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+    @Inject
+    lateinit var locationBitmapProvider: LocationBitmapProvider
 
     private var googleMap: GoogleMap? = null
     private var shouldFetchNewRestaurants = false
@@ -48,7 +52,6 @@ class MainActivity : BaseActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         restaurantsViewModel = ViewModelProviders.of(this, viewModelFactory).get(RestaurantsViewModel::class.java)
         observeForRestaurantsList()
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -80,8 +83,18 @@ class MainActivity : BaseActivity(),
             val title = it.name
             val position = LatLng(it.location.latitude, it.location.longitude)
             val tag = it.id
-            val markerOptions = MarkerOptions().position(position).title(title).snippet(title)
+            val markerOptions = MarkerOptions().position(position).title(title).icon(locationBitmapProvider.foodMarkerBitmap)
             val marker = googleMap?.addMarker(markerOptions)
+            marker?.tag = tag
+        }
+    }
+
+    private fun getBitmapFromDrawable(vectorId: Int): BitmapDescriptor? {
+        return  ContextCompat.getDrawable(this, vectorId)?.run {
+            setBounds(0, 0, intrinsicWidth, intrinsicHeight)
+            val bitmap = Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
+            draw(Canvas(bitmap))
+            BitmapDescriptorFactory.fromBitmap(bitmap)
         }
     }
 
