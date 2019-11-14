@@ -7,10 +7,14 @@ import com.abhrp.foodnearme.domain.model.main.Restaurant
 import com.abhrp.foodnearme.domain.usecase.main.GetRestaurants
 import com.abhrp.foodnearme.presentation.state.Resource
 import com.abhrp.foodnearme.presentation.state.ResourceState
+import com.abhrp.foodnearme.util.logging.AppLogger
 import io.reactivex.observers.DisposableSingleObserver
 import javax.inject.Inject
 
 class RestaurantsViewModel @Inject constructor(private val getRestaurants: GetRestaurants): ViewModel() {
+
+    @Inject
+    lateinit var logger: AppLogger
 
     override fun onCleared() {
         super.onCleared()
@@ -33,6 +37,7 @@ class RestaurantsViewModel @Inject constructor(private val getRestaurants: GetRe
         }
 
         override fun onError(error: Throwable) {
+            logger.logThrowable(error)
             restaurantsLiveData.postValue(Resource(ResourceState.ERROR, null, error.localizedMessage))
         }
     }

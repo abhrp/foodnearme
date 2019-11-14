@@ -9,4 +9,5 @@
     <string name="permission_location_rationale">We need the location permission to show you the most accurate results as per your current location.</string>
     <string name="location_denied">Location permission denied</string>
     <string name="never_ask_location">Will never ask for location.</string>
+    <string name="offline_new_results">Cannot fetch new results when offline</string>
 </resources>

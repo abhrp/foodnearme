@@ -20,6 +20,7 @@ abstract class BaseActivity: DaggerAppCompatActivity() {
     lateinit var connectionMonitor: ConnectionMonitor
 
     private var offLineSnackbar: Snackbar? = null
+    var isOnline: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +29,7 @@ abstract class BaseActivity: DaggerAppCompatActivity() {
 
     private fun observerConnectionStatus() {
         connectionMonitor.observe(this, Observer {
+            isOnline = it
             if (it) {
                 online()
             } else {

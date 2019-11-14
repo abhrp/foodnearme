@@ -2,10 +2,7 @@ package com.abhrp.foodnearme.ui.main
 
 import android.Manifest
 import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.abhrp.foodnearme.R
@@ -16,6 +13,7 @@ import com.abhrp.foodnearme.presentation.viewmodel.RestaurantsViewModel
 import com.abhrp.foodnearme.ui.base.BaseActivity
 import com.abhrp.foodnearme.util.location.LocationModel
 import com.abhrp.foodnearme.util.location.LocationMonitor
+import com.abhrp.foodnearme.util.logging.AppLogger
 import com.abhrp.foodnearme.util.map.LocationBitmapProvider
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -33,7 +31,8 @@ class MainActivity : BaseActivity(),
     GoogleMap.OnCameraMoveListener,
     GoogleMap.OnCameraMoveStartedListener,
     GoogleMap.OnCameraMoveCanceledListener,
-    GoogleMap.OnMyLocationButtonClickListener {
+    GoogleMap.OnMyLocationButtonClickListener,
+    GoogleMap.OnInfoWindowClickListener {
 
     @Inject
     lateinit var locationMonitor: LocationMonitor
@@ -42,8 +41,11 @@ class MainActivity : BaseActivity(),
     lateinit var restaurantsViewModel: RestaurantsViewModel
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
     @Inject
     lateinit var locationBitmapProvider: LocationBitmapProvider
+    @Inject
+    lateinit var logger: AppLogger
 
     private var googleMap: GoogleMap? = null
     private var shouldFetchNewRestaurants = false
@@ -68,6 +70,7 @@ class MainActivity : BaseActivity(),
                     addNewMarkersOnMap(resource.data)
                 }
                 ResourceState.ERROR -> {
+                    logger.logError(resource.error)
                     showError(resource.error)
                 }
             }
@@ -89,15 +92,6 @@ class MainActivity : BaseActivity(),
         }
     }
 
-    private fun getBitmapFromDrawable(vectorId: Int): BitmapDescriptor? {
-        return  ContextCompat.getDrawable(this, vectorId)?.run {
-            setBounds(0, 0, intrinsicWidth, intrinsicHeight)
-            val bitmap = Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
-            draw(Canvas(bitmap))
-            BitmapDescriptorFactory.fromBitmap(bitmap)
-        }
-    }
-
     override fun onMapReady(map: GoogleMap?) {
         googleMap = map
         try {
@@ -110,11 +104,18 @@ class MainActivity : BaseActivity(),
         googleMap?.setOnCameraMoveListener(this)
         googleMap?.setOnCameraMoveCanceledListener(this)
         googleMap?.setOnMyLocationButtonClickListener(this)
+        googleMap?.setOnInfoWindowClickListener(this)
         getCurrentLocationWithPermissionCheck()
     }
 
-    override fun onCameraMove() {
+    override fun onInfoWindowClick(marker: Marker?) {
+        if(marker != null) {
+            //Go to new screen
+        }
+    }
 
+    override fun onCameraMove() {
+        logger.logDebug("Camera moved")
     }
 
     override fun onCameraMoveStarted(reason: Int) {
@@ -141,20 +142,21 @@ class MainActivity : BaseActivity(),
     }
 
     override fun onCameraIdle() {
-        if (shouldFetchNewRestaurants) {
-            shouldFetchNewRestaurants = false
-            isMyLocationClicked = false
-            sendNewRequestForCurrentMapBounds()
-        }
+        fetchNewRestaurants()
     }
 
+
     private fun sendNewRequestForCurrentMapBounds() {
-        val latLngBounds = googleMap?.projection?.visibleRegion?.latLngBounds
-        if (latLngBounds != null) {
-            googleMap?.clear()
-            val northEast = "${latLngBounds.northeast.latitude},${latLngBounds.northeast.longitude}"
-            val southWest = "${latLngBounds.southwest.latitude},${latLngBounds.southwest.longitude}"
-            fetchRestaurants(northEast, southWest)
+        if (isOnline) {
+            val latLngBounds = googleMap?.projection?.visibleRegion?.latLngBounds
+            if (latLngBounds != null) {
+                googleMap?.clear()
+                val northEast = "${latLngBounds.northeast.latitude},${latLngBounds.northeast.longitude}"
+                val southWest = "${latLngBounds.southwest.latitude},${latLngBounds.southwest.longitude}"
+                fetchRestaurants(northEast, southWest)
+            }
+        } else {
+            showError(getString(R.string.offline_new_results))
         }
     }
 
@@ -172,10 +174,20 @@ class MainActivity : BaseActivity(),
 
     override fun online() {
         dismissOfflineSnackBar()
+        fetchNewRestaurants()
+    }
+
+    private fun fetchNewRestaurants() {
+        if (shouldFetchNewRestaurants) {
+            shouldFetchNewRestaurants = false
+            isMyLocationClicked = false
+            sendNewRequestForCurrentMapBounds()
+        }
     }
 
     override fun offline() {
         showOffLineSnackBar(mainContainer)
+        shouldFetchNewRestaurants = true
     }
 
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)

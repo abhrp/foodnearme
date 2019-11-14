@@ -38,8 +38,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".ui.main.MainActivity"
-            android:theme="@style/Theme.Design.NoActionBar">
+            android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
