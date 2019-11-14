@@ -44,6 +44,7 @@ class RestaurantDetailsActivity : BaseActivity() {
 
     private var id: String? = null
     private var socialInfoCount = 0
+    private var resultsLoaded = false
 
     companion object {
         const val ID = "id"
@@ -80,6 +81,7 @@ class RestaurantDetailsActivity : BaseActivity() {
                     progressBar.visibility = View.GONE
                     val data = resource.data
                     setupDetailsUI(data)
+                    resultsLoaded = true
                 }
                 ResourceState.ERROR -> {
                     progressBar.visibility = View.GONE
@@ -136,7 +138,11 @@ class RestaurantDetailsActivity : BaseActivity() {
     }
 
     private fun setPricing(pricing: String?) {
-        affordability.text = getString(R.string.pricing, pricing)
+        if (pricing != null) {
+            affordability.text = getString(R.string.pricing, pricing)
+        } else {
+            affordability.visibility = View.GONE
+        }
     }
 
     private fun setUpMenuLink(link: String?) {
@@ -219,39 +225,31 @@ class RestaurantDetailsActivity : BaseActivity() {
     private fun setUpPhoneCallIcon(phone: String?) {
         if (phone != null) {
             socialInfoCount++
+            phoneCallIcon.visibility = View.VISIBLE
             phoneCallIcon.setOnClickListener {
                 val intent = Intent(Intent.ACTION_DIAL)
                 intent.data = Uri.parse("tel:$phone")
                 startActivity(intent)
             }
-        } else {
-            phoneCallIcon.visibility = View.GONE
         }
     }
 
     private fun setUpTwitterIcon(twitter: String?) {
         if (twitter != null) {
             socialInfoCount++
+            twitterIcon.visibility = View.VISIBLE
             twitterIcon.setOnClickListener {
-                try {
-                    packageManager.getPackageInfo("com.twitter.android", 0)
-                    val intent =
-                        Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?user_id=$twitter"))
-                    startActivity(intent)
-                } catch (e: Exception) {
-                    val intent =
-                        Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/$twitter"))
-                    startActivity(intent)
-                }
+                val intent =
+                    Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/$twitter"))
+                startActivity(intent)
             }
-        } else {
-            twitterIcon.visibility = View.GONE
         }
     }
 
     private fun setUpFacebookIcon(facebook: String?) {
         if (facebook != null) {
             socialInfoCount++
+            facebookIcon.visibility = View.VISIBLE
             facebookIcon.setOnClickListener {
                 try {
                     packageManager.getPackageInfo("com.facebook.katana", 0)
@@ -263,14 +261,13 @@ class RestaurantDetailsActivity : BaseActivity() {
                     startActivity(intent)
                 }
             }
-        } else {
-            facebookIcon.visibility = View.GONE
         }
     }
 
     private fun setUpGoogleMapDirection(latitude: Double?, longitude: Double?) {
         if (latitude != null && longitude != null) {
             socialInfoCount++
+            googleMapIcon.visibility = View.VISIBLE
             googleMapIcon.setOnClickListener {
                 val gmmIntentUri: Uri? = Uri.parse("geo:$latitude,$longitude?z=17")
                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
@@ -279,8 +276,6 @@ class RestaurantDetailsActivity : BaseActivity() {
                     startActivity(mapIntent)
                 }
             }
-        } else {
-            googleMapIcon.visibility = View.GONE
         }
     }
 
@@ -297,8 +292,10 @@ class RestaurantDetailsActivity : BaseActivity() {
     }
 
     private fun fetchRestaurantDetails(id: String?) {
-        if (id != null) {
+        if (id != null && isOnline) {
             restaurantDetailsViewModel.fetchRestaurantDetails(id)
+        } else {
+            showError(getString(R.string.offline_new_results))
         }
     }
 
@@ -308,6 +305,9 @@ class RestaurantDetailsActivity : BaseActivity() {
 
     override fun online() {
         dismissOfflineSnackBar()
+        if(!resultsLoaded) {
+            fetchRestaurantDetails(id)
+        }
     }
 
     override fun offline() {
