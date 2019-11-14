@@ -4,7 +4,7 @@ import com.abhrp.foodnearme.domain.model.main.Restaurant
 import com.abhrp.foodnearme.domain.model.wrapper.ResultWrapper
 import io.reactivex.Single
 
-interface RestaurantsRespository {
+interface RestaurantsRepository {
 
     /**
      * Gets a list of restaurants from a given map bounds

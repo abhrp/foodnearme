@@ -15,7 +15,6 @@ class GetRestaurantDetails @Inject constructor(
 
     override fun buildUseCaseObservable(params: Params?): Single<ResultWrapper<RestaurantDetails>> {
         requireNotNull(params)
-        requireNotNull(params.id)
         return remoteDetailsRepository.getRestaurantDetails(params.id)
     }
 

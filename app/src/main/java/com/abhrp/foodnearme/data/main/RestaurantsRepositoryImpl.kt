@@ -2,12 +2,12 @@ package com.abhrp.foodnearme.data.main
 
 import com.abhrp.foodnearme.domain.model.main.Restaurant
 import com.abhrp.foodnearme.domain.model.wrapper.ResultWrapper
-import com.abhrp.foodnearme.domain.repository.main.RestaurantsRespository
+import com.abhrp.foodnearme.domain.repository.main.RestaurantsRepository
 import io.reactivex.Single
 import javax.inject.Inject
 
 class RestaurantsRepositoryImpl @Inject constructor(private val restaurantsRemote: RestaurantsRemote) :
-    RestaurantsRespository {
+    RestaurantsRepository {
 
     /**
      * Gets a list of restaurants from a given map bounds

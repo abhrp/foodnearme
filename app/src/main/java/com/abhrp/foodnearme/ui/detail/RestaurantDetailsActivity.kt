@@ -107,6 +107,7 @@ class RestaurantDetailsActivity : BaseActivity() {
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun setOpenStatus(isOpen: Boolean) {
         if (isOpen) {
             openStatus.text = getString(R.string.open_now)
@@ -128,6 +129,7 @@ class RestaurantDetailsActivity : BaseActivity() {
             totalRatings.text = getString(R.string.ratings_count, totalRating)
         } else {
             ratings.text = "0"
+            @Suppress("DEPRECATION")
             ratings.setTextColor(resources.getColor(R.color.colorPrimaryText))
             totalRatings.text = getString(R.string.ratings_count, 0)
         }
