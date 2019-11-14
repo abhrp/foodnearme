@@ -25,7 +25,13 @@ import permissions.dispatcher.*
 import javax.inject.Inject
 
 @RuntimePermissions
-class MainActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveListener, GoogleMap.OnCameraMoveStartedListener, GoogleMap.OnCameraMoveCanceledListener {
+class MainActivity : BaseActivity(),
+    OnMapReadyCallback,
+    GoogleMap.OnCameraIdleListener,
+    GoogleMap.OnCameraMoveListener,
+    GoogleMap.OnCameraMoveStartedListener,
+    GoogleMap.OnCameraMoveCanceledListener,
+    GoogleMap.OnMyLocationButtonClickListener {
 
     @Inject
     lateinit var locationMonitor: LocationMonitor
@@ -36,6 +42,8 @@ class MainActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleL
     lateinit var viewModelFactory: ViewModelFactory
 
     private var googleMap: GoogleMap? = null
+    private var shouldFetchNewRestaurants = false
+    private var isMyLocationClicked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,6 +93,10 @@ class MainActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleL
 
         }
         googleMap?.setOnCameraIdleListener(this)
+        googleMap?.setOnCameraMoveStartedListener(this)
+        googleMap?.setOnCameraMoveListener(this)
+        googleMap?.setOnCameraMoveCanceledListener(this)
+        googleMap?.setOnMyLocationButtonClickListener(this)
         getCurrentLocationWithPermissionCheck()
     }
 
@@ -92,16 +104,35 @@ class MainActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.OnCameraIdleL
 
     }
 
-    override fun onCameraMoveStarted(p0: Int) {
-
+    override fun onCameraMoveStarted(reason: Int) {
+        when(reason) {
+            GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE -> {
+                shouldFetchNewRestaurants = true
+            }
+            GoogleMap.OnCameraMoveStartedListener.REASON_API_ANIMATION -> {
+                shouldFetchNewRestaurants = false || isMyLocationClicked
+            }
+            GoogleMap.OnCameraMoveStartedListener.REASON_DEVELOPER_ANIMATION -> {
+                shouldFetchNewRestaurants = true
+            }
+        }
     }
 
     override fun onCameraMoveCanceled() {
-        
+        shouldFetchNewRestaurants = false
+    }
+
+    override fun onMyLocationButtonClick(): Boolean {
+        isMyLocationClicked = true
+        return false
     }
 
     override fun onCameraIdle() {
-        sendNewRequestForCurrentMapBounds()
+        if (shouldFetchNewRestaurants) {
+            shouldFetchNewRestaurants = false
+            isMyLocationClicked = false
+            sendNewRequestForCurrentMapBounds()
+        }
     }
 
     private fun sendNewRequestForCurrentMapBounds() {
