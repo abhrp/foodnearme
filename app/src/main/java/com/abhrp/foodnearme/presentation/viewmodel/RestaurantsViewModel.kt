@@ -35,7 +35,12 @@ class RestaurantsViewModel @Inject constructor(private val getRestaurants: GetRe
 
         override fun onSuccess(result: ResultWrapper<List<Restaurant>>) {
             if (result.code == 200) {
-                restaurantsLiveData.postValue(Resource(ResourceState.SUCCESS, result.data, null))
+                val data = result.data
+                if(data != null && data.count() > 0) {
+                    restaurantsLiveData.postValue(Resource(ResourceState.SUCCESS, data, null))
+                } else {
+                    restaurantsLiveData.postValue(Resource(ResourceState.ERROR, null, "No restaurants found in the area."))
+                }
             } else {
                 logger.logError(result.error)
                 restaurantsLiveData.postValue(Resource(ResourceState.ERROR, null, result.error))
