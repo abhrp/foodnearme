@@ -12,6 +12,10 @@ import com.abhrp.foodnearme.util.logging.AppLogger
 import io.reactivex.observers.DisposableSingleObserver
 import javax.inject.Inject
 
+/**
+ * ViewModel class to get list of restaurants
+ * @param getRestaurants Use case class to get restaurants
+ */
 class RestaurantsViewModel @Inject constructor(private val getRestaurants: GetRestaurants) :
     ViewModel() {
 

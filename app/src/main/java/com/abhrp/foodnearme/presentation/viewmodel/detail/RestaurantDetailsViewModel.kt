@@ -13,6 +13,10 @@ import io.reactivex.observers.DisposableSingleObserver
 import okhttp3.internal.http2.Http2Reader.Companion.logger
 import javax.inject.Inject
 
+/**
+ * Viewmodel class for the details screen
+ * @param getRestaurantDetails Use case class to get details
+ */
 class RestaurantDetailsViewModel @Inject constructor(private val getRestaurantDetails: GetRestaurantDetails) :
     ViewModel() {
 
@@ -23,7 +27,7 @@ class RestaurantDetailsViewModel @Inject constructor(private val getRestaurantDe
         getRestaurantDetails.disposeAll()
     }
 
-    fun observerRestuarantDetails(): LiveData<Resource<RestaurantDetails>> =
+    fun observeRestaurantDetails(): LiveData<Resource<RestaurantDetails>> =
         restaurantDetailsLiveData
 
     fun fetchRestaurantDetails(id: String) {

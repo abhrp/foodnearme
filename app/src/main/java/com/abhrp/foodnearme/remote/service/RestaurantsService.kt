@@ -1,6 +1,6 @@
 package com.abhrp.foodnearme.remote.service
 
-import com.abhrp.foodnearme.remote.config.RemoteConstants
+import com.abhrp.foodnearme.remote.constants.RemoteConstants
 import com.abhrp.foodnearme.remote.response.base.FourSquareApiResponse
 import com.abhrp.foodnearme.remote.response.detail.VenueDetailsResponse
 import com.abhrp.foodnearme.remote.response.main.RestaurantsResponse

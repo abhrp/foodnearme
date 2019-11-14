@@ -1,5 +1,6 @@
 package com.abhrp.foodnearme.remote.config
 
+import com.abhrp.foodnearme.remote.constants.RemoteConstants
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

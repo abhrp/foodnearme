@@ -1,5 +1,6 @@
 package com.abhrp.foodnearme.remote.config
 
+import com.abhrp.foodnearme.remote.constants.RemoteConstants
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory

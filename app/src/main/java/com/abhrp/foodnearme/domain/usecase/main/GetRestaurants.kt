@@ -24,7 +24,7 @@ class GetRestaurants @Inject constructor(
     }
 
     /**
-     * Class to get
+     * Class to get params
      * @param northEast The north eastern bound parameter
      * @param southWest The south western bound parameter
      */

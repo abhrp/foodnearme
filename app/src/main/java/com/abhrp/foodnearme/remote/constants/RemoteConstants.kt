@@ -1,4 +1,4 @@
-package com.abhrp.foodnearme.remote.config
+package com.abhrp.foodnearme.remote.constants
 
 object RemoteConstants {
     const val TIME_OUT = 60L

@@ -48,9 +48,9 @@ class RestaurantDetailsViewModelTest {
         val params = GetRestaurantDetails.Params.getParams(id)
         verify(getRestaurantDetails, Mockito.times(1)).execute(argumentCaptor.capture(), eq(params))
         argumentCaptor.firstValue.onSuccess(resultWrapper)
-        Assert.assertEquals(restDetailsViewModel.observerRestuarantDetails().value?.state, ResourceState.SUCCESS)
-        Assert.assertEquals(restDetailsViewModel.observerRestuarantDetails().value?.data, restaurantDetails)
-        Assert.assertEquals(restDetailsViewModel.observerRestuarantDetails().value?.error, null)
+        Assert.assertEquals(restDetailsViewModel.observeRestaurantDetails().value?.state, ResourceState.SUCCESS)
+        Assert.assertEquals(restDetailsViewModel.observeRestaurantDetails().value?.data, restaurantDetails)
+        Assert.assertEquals(restDetailsViewModel.observeRestaurantDetails().value?.error, null)
     }
 
     @Test
@@ -62,9 +62,9 @@ class RestaurantDetailsViewModelTest {
         val params = GetRestaurantDetails.Params.getParams(id)
         verify(getRestaurantDetails, Mockito.times(1)).execute(argumentCaptor.capture(), eq(params))
         argumentCaptor.firstValue.onSuccess(resultWrapper)
-        Assert.assertEquals(restDetailsViewModel.observerRestuarantDetails().value?.state, ResourceState.ERROR)
-        Assert.assertEquals(restDetailsViewModel.observerRestuarantDetails().value?.data, null)
-        Assert.assertEquals(restDetailsViewModel.observerRestuarantDetails().value?.error, error)
+        Assert.assertEquals(restDetailsViewModel.observeRestaurantDetails().value?.state, ResourceState.ERROR)
+        Assert.assertEquals(restDetailsViewModel.observeRestaurantDetails().value?.data, null)
+        Assert.assertEquals(restDetailsViewModel.observeRestaurantDetails().value?.error, error)
     }
 
     @Test
@@ -75,8 +75,8 @@ class RestaurantDetailsViewModelTest {
         val params = GetRestaurantDetails.Params.getParams(id)
         verify(getRestaurantDetails, Mockito.times(1)).execute(argumentCaptor.capture(), eq(params))
         argumentCaptor.firstValue.onError(Throwable(error))
-        Assert.assertEquals(restDetailsViewModel.observerRestuarantDetails().value?.state, ResourceState.ERROR)
-        Assert.assertEquals(restDetailsViewModel.observerRestuarantDetails().value?.data, null)
-        Assert.assertEquals(restDetailsViewModel.observerRestuarantDetails().value?.error, error)
+        Assert.assertEquals(restDetailsViewModel.observeRestaurantDetails().value?.state, ResourceState.ERROR)
+        Assert.assertEquals(restDetailsViewModel.observeRestaurantDetails().value?.data, null)
+        Assert.assertEquals(restDetailsViewModel.observeRestaurantDetails().value?.error, error)
     }
 }

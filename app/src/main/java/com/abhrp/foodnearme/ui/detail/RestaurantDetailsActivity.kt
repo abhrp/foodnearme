@@ -71,7 +71,7 @@ class RestaurantDetailsActivity : BaseActivity() {
     }
 
     private fun observeRestaurantDetails() {
-        restaurantDetailsViewModel.observerRestuarantDetails().observe(this, Observer { resource ->
+        restaurantDetailsViewModel.observeRestaurantDetails().observe(this, Observer { resource ->
             when (resource.state) {
                 ResourceState.LOADING -> {
                     progressBar.visibility = View.VISIBLE
