@@ -64,14 +64,15 @@ class RestaurantDetailsActivity : BaseActivity() {
             setDisplayShowHomeEnabled(true)
             title = ""
         }
-        restaurantDetailsViewModel = ViewModelProviders.of(this, viewModelFactory).get(RestaurantDetailsViewModel::class.java)
+        restaurantDetailsViewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(RestaurantDetailsViewModel::class.java)
         observeRestaurantDetails()
         fetchRestaurantDetails(id)
     }
 
     private fun observeRestaurantDetails() {
         restaurantDetailsViewModel.observerRestuarantDetails().observe(this, Observer { resource ->
-            when(resource.state) {
+            when (resource.state) {
                 ResourceState.LOADING -> {
                     progressBar.visibility = View.VISIBLE
                 }
@@ -157,7 +158,11 @@ class RestaurantDetailsActivity : BaseActivity() {
         }
     }
 
-    private fun setUpTimings(timeZone: String?, currentStatus: String?, timings: List<RestaurantTiming>?) {
+    private fun setUpTimings(
+        timeZone: String?,
+        currentStatus: String?,
+        timings: List<RestaurantTiming>?
+    ) {
         timingHeader.text = getString(R.string.timings, timeZone)
         if (currentStatus != null) {
             todayTiming.text = getString(R.string.today_timing, currentStatus)
@@ -189,7 +194,13 @@ class RestaurantDetailsActivity : BaseActivity() {
         }
     }
 
-    private fun setUpSocialBar(phone: String?, twitter: String?, facebook: String?, latitude: Double?, longitude: Double?) {
+    private fun setUpSocialBar(
+        phone: String?,
+        twitter: String?,
+        facebook: String?,
+        latitude: Double?,
+        longitude: Double?
+    ) {
         setUpPhoneCallIcon(phone)
 
         setUpTwitterIcon(twitter)
@@ -198,7 +209,7 @@ class RestaurantDetailsActivity : BaseActivity() {
 
         setUpGoogleMapDirection(latitude, longitude)
 
-        if(socialInfoCount == 0) {
+        if (socialInfoCount == 0) {
             socialBar.visibility = View.GONE
         }
     }
@@ -273,7 +284,7 @@ class RestaurantDetailsActivity : BaseActivity() {
 
     @Suppress("DEPRECATION")
     private fun setHeaderImage(imageUrl: String?) {
-        if(imageUrl != null && imageUrl.isNotEmpty()) {
+        if (imageUrl != null && imageUrl.isNotEmpty()) {
             Picasso.get()
                 .load(imageUrl)
                 .placeholder(R.drawable.placeholder)

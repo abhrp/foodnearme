@@ -12,7 +12,8 @@ import com.abhrp.foodnearme.util.logging.AppLogger
 import io.reactivex.observers.DisposableSingleObserver
 import javax.inject.Inject
 
-class RestaurantDetailsViewModel @Inject constructor(private val getRestaurantDetails: GetRestaurantDetails): ViewModel() {
+class RestaurantDetailsViewModel @Inject constructor(private val getRestaurantDetails: GetRestaurantDetails) :
+    ViewModel() {
 
     @Inject
     lateinit var logger: AppLogger
@@ -24,28 +25,51 @@ class RestaurantDetailsViewModel @Inject constructor(private val getRestaurantDe
         getRestaurantDetails.disposeAll()
     }
 
-    fun observerRestuarantDetails(): LiveData<Resource<RestaurantDetails>> = restaurantDetailsLiveData
+    fun observerRestuarantDetails(): LiveData<Resource<RestaurantDetails>> =
+        restaurantDetailsLiveData
 
     fun fetchRestaurantDetails(id: String) {
         restaurantDetailsLiveData.postValue(Resource(ResourceState.LOADING, null, null))
-        getRestaurantDetails.execute(RestaurantDetailsObserver(), GetRestaurantDetails.Params.getParams(id))
+        getRestaurantDetails.execute(
+            RestaurantDetailsObserver(),
+            GetRestaurantDetails.Params.getParams(id)
+        )
     }
 
 
-    private inner class RestaurantDetailsObserver: DisposableSingleObserver<ResultWrapper<RestaurantDetails>>() {
+    private inner class RestaurantDetailsObserver :
+        DisposableSingleObserver<ResultWrapper<RestaurantDetails>>() {
 
         override fun onSuccess(result: ResultWrapper<RestaurantDetails>) {
             if (result.code == 200) {
-                restaurantDetailsLiveData.postValue(Resource(ResourceState.SUCCESS, result.data, null))
+                restaurantDetailsLiveData.postValue(
+                    Resource(
+                        ResourceState.SUCCESS,
+                        result.data,
+                        null
+                    )
+                )
             } else {
                 logger.logError(result.error)
-                restaurantDetailsLiveData.postValue(Resource(ResourceState.ERROR, null, result.error))
+                restaurantDetailsLiveData.postValue(
+                    Resource(
+                        ResourceState.ERROR,
+                        null,
+                        result.error
+                    )
+                )
             }
         }
 
         override fun onError(e: Throwable) {
             logger.logThrowable(e)
-            restaurantDetailsLiveData.postValue(Resource(ResourceState.ERROR, null, e.localizedMessage))
+            restaurantDetailsLiveData.postValue(
+                Resource(
+                    ResourceState.ERROR,
+                    null,
+                    e.localizedMessage
+                )
+            )
         }
 
     }

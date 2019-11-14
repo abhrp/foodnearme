@@ -22,7 +22,7 @@ class RestaurantDetailsRemoteImpl @Inject constructor(
         return foodApiFactory.restaurantsService.getRestaurantDetails(id).map { apiResponse ->
             if (apiResponse.isSuccessful) {
                 val response = apiResponse.body()?.response
-                if(response != null) {
+                if (response != null) {
                     val mapToData = mapper.mapToData(response.venueDetails)
                     ResultWrapper(mapToData, 200, null)
                 } else {

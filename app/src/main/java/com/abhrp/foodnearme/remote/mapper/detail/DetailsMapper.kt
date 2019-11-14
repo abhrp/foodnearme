@@ -7,7 +7,6 @@ import com.abhrp.foodnearme.remote.model.detail.Category
 import com.abhrp.foodnearme.remote.model.detail.Photo
 import com.abhrp.foodnearme.remote.model.detail.TimeFrame
 import com.abhrp.foodnearme.remote.model.detail.VenueDetails
-import com.abhrp.foodnearme.util.DisplayMetricsHelper
 import javax.inject.Inject
 
 class DetailsMapper @Inject constructor() :
@@ -36,15 +35,17 @@ class DetailsMapper @Inject constructor() :
         val isOpenNow = remoteModel.hours?.isOpen
         val currentStatus = remoteModel.hours?.status
         val timings = getTimings(remoteModel.hours?.timeFrames)
-        return RestaurantDetails(id, name, imageUrl, phone, formattedPhone, twitter, facebook, faceBookName,
-                                address, latitude, longitude, categories, affordability, noOfLikes, rating,
-                                ratingColor, totalRating, menuUrl, timeZone, isOpenNow, currentStatus, timings)
+        return RestaurantDetails(
+            id, name, imageUrl, phone, formattedPhone, twitter, facebook, faceBookName,
+            address, latitude, longitude, categories, affordability, noOfLikes, rating,
+            ratingColor, totalRating, menuUrl, timeZone, isOpenNow, currentStatus, timings
+        )
     }
 
     private fun getTimings(timeFrames: List<TimeFrame>?): List<RestaurantTiming>? {
         return timeFrames?.map {
             val times = it.openTime
-            val openTime = if(times != null && times.count() > 0) times[0].openTime else null
+            val openTime = if (times != null && times.count() > 0) times[0].openTime else null
             RestaurantTiming(it.days, openTime)
         }
     }
@@ -54,7 +55,7 @@ class DetailsMapper @Inject constructor() :
     }
 
     private fun getFormattedAddress(addresses: List<String>?): String? {
-        return  addresses?.joinToString(", ")
+        return addresses?.joinToString(", ")
     }
 
     private fun getCompleteImageUrl(photo: Photo?): String? {
