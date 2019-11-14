@@ -20,8 +20,8 @@ android {
     }
     buildTypes {
         release {
-            buildConfigField "String", "CLIENT_ID", "\"K11H1CRXCVZBEY5WF1RKI0SNNRUCX4QBENOWVVDMXJQUHEBZ\""
-            buildConfigField "String", "CLIENT_SECRET", "\"AXPBVMGW5NB3C1QIGPETKSEIR0WUDVEKIQORFG5NTU3MZIKE\""
+            buildConfigField "String", "CLIENT_ID", "\"DSZXR23GDE255MVTYOOR4I5M54C35L5OAFXWPSIP24PUCU1A\""
+            buildConfigField "String", "CLIENT_SECRET", "\"PO1WJOQSOMTBAG5VS20QQNORX2SSWHMXK05J0HHNOF3F5LVW\""
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -30,8 +30,8 @@ android {
         }
 
         debug {
-            buildConfigField "String", "CLIENT_ID", "\"LDPAQM3OSIQDORNU3O1JR4EDPLJV40U4RLSBE4PWGAU3CSY0\""
-            buildConfigField "String", "CLIENT_SECRET", "\"42NG4KTUZC3GFXJMA5N1LD5CPZCN2E1NEYZWC2DANSDNXZI5\""
+            buildConfigField "String", "CLIENT_ID", "\"DSZXR23GDE255MVTYOOR4I5M54C35L5OAFXWPSIP24PUCU1A\""
+            buildConfigField "String", "CLIENT_SECRET", "\"PO1WJOQSOMTBAG5VS20QQNORX2SSWHMXK05J0HHNOF3F5LVW\""
             versionNameSuffix ".debug"
             debuggable true
             minifyEnabled false

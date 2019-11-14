@@ -44,7 +44,6 @@ class RestaurantDetailsActivity : BaseActivity() {
 
     private var id: String? = null
     private var socialInfoCount = 0
-    private var resultsLoaded = false
 
     companion object {
         const val ID = "id"
@@ -81,7 +80,6 @@ class RestaurantDetailsActivity : BaseActivity() {
                     progressBar.visibility = View.GONE
                     val data = resource.data
                     setupDetailsUI(data)
-                    resultsLoaded = true
                 }
                 ResourceState.ERROR -> {
                     progressBar.visibility = View.GONE
@@ -305,9 +303,6 @@ class RestaurantDetailsActivity : BaseActivity() {
 
     override fun online() {
         dismissOfflineSnackBar()
-        if(!resultsLoaded) {
-            fetchRestaurantDetails(id)
-        }
     }
 
     override fun offline() {
