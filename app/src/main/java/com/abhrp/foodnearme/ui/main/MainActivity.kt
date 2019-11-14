@@ -54,7 +54,7 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
             }
         })
     }
-    
+
     override fun onMapReady(map: GoogleMap?) {
         googleMap = map
         try {
