@@ -1,10 +1,10 @@
 package com.abhrp.foodnearme.ui.main
 
 import android.Manifest
+import android.content.res.Resources
 import android.os.Bundle
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.abhrp.foodnearme.R
 import com.abhrp.foodnearme.ui.base.BaseActivity
@@ -15,6 +15,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import kotlinx.android.synthetic.main.activity_main.*
 import permissions.dispatcher.*
 import javax.inject.Inject
@@ -24,6 +25,7 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
 
     @Inject
     lateinit var locationMonitor: LocationMonitor
+
     private var googleMap: GoogleMap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,6 +87,11 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
 
     override fun onMapReady(map: GoogleMap?) {
         googleMap = map
+        try {
+            googleMap?.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
+        } catch (e: Resources.NotFoundException) {
+
+        }
         getCurrentLocationWithPermissionCheck()
     }
 }
