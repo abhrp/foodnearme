@@ -21,7 +21,13 @@ class RestaurantDetailsRemoteImpl @Inject constructor(
     override fun getRestaurantDetails(id: String): Single<ResultWrapper<RestaurantDetails>> {
         return foodApiFactory.restaurantsService.getRestaurantDetails(id).map { apiResponse ->
             if (apiResponse.isSuccessful) {
-                ResultWrapper<RestaurantDetails>(null, 200, "")
+                val response = apiResponse.body()?.response
+                if(response != null) {
+                    val mapToData = mapper.mapToData(response.venueDetails)
+                    ResultWrapper(mapToData, 200, null)
+                } else {
+                    ResultWrapper<RestaurantDetails>(null, 400, "No result")
+                }
             } else {
                 val error = errorUtil.getErrorFromResponse(apiResponse.errorBody())
                 ResultWrapper<RestaurantDetails>(null, error?.code, error?.error)

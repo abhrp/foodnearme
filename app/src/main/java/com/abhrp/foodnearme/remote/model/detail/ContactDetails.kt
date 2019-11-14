@@ -9,5 +9,5 @@ data class ContactDetails(
     @Json(name = "formattedPhone") val formattedPhone: String?,
     @Json(name = "twitter") val twitter: String?,
     @Json(name = "facebook") val facebook: String?,
-    @Json(name = "facebookUsername") val facebookUsername: String?
+    @Json(name = "facebookName") val facebookName: String?
 )
