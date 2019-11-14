@@ -20,8 +20,21 @@ android {
     }
     buildTypes {
         release {
+            buildConfigField "String", "CLIENT_ID", "\"K11H1CRXCVZBEY5WF1RKI0SNNRUCX4QBENOWVVDMXJQUHEBZ\""
+            buildConfigField "String", "CLIENT_SECRET", "\"AXPBVMGW5NB3C1QIGPETKSEIR0WUDVEKIQORFG5NTU3MZIKE\""
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            zipAlignEnabled true
+            debuggable false
+        }
+
+        debug {
+            buildConfigField "String", "CLIENT_ID", "\"K11H1CRXCVZBEY5WF1RKI0SNNRUCX4QBENOWVVDMXJQUHEBZ\""
+            buildConfigField "String", "CLIENT_SECRET", "\"AXPBVMGW5NB3C1QIGPETKSEIR0WUDVEKIQORFG5NTU3MZIKE\""
+            versionNameSuffix ".debug"
+            debuggable true
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 

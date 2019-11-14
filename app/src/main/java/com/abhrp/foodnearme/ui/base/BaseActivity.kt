@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.abhrp.foodnearme.R
 import com.abhrp.foodnearme.util.ConnectionMonitor
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerAppCompatActivity
+import permissions.dispatcher.PermissionRequest
 import javax.inject.Inject
 
 abstract class BaseActivity: DaggerAppCompatActivity() {
@@ -52,6 +54,15 @@ abstract class BaseActivity: DaggerAppCompatActivity() {
 
     fun showToast(@StringRes messageId: Int) {
         Toast.makeText(this, getString(messageId), Toast.LENGTH_LONG).show()
+    }
+
+    fun showRationaleDialog(@StringRes messageResId: Int, request: PermissionRequest) {
+        AlertDialog.Builder(this)
+            .setPositiveButton(R.string.button_allow) { _, _ -> request.proceed() }
+            .setNegativeButton(R.string.button_deny) { _, _ -> request.cancel() }
+            .setCancelable(false)
+            .setMessage(messageResId)
+            .show()
     }
 
     override fun onDestroy() {

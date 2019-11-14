@@ -1,10 +1,11 @@
 package com.abhrp.foodnearme.remote.config
 
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class VersionProvider @Inject constructor() {
 
     fun getVersionDate(): String {
